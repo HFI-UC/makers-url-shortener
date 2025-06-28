@@ -15,13 +15,13 @@ export default {
     }
 
     if (request.method === 'POST' && url.pathname === '/') {
-      return withCors(await handlePost(request, env.LINKS));
+      return withCors(await handlePost(request, LINKS));
     }
 
     if (request.method === 'GET') {
       const key = url.pathname.slice(1);
       if (key) {
-        const target = await env.LINKS.get(key);
+        const target = await LINKS.get(key);
         if (target) {
           return withCors(Response.redirect(target, 302));
         }
