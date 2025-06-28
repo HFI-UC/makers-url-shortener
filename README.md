@@ -27,6 +27,12 @@ Prefix the returned `key` with the Worker domain to create the full short link. 
 https://url.example.workers.dev/demo
 ```
 
+### CORS
+
+The Worker responds with permissive CORS headers, allowing requests from any origin.
+`OPTIONS` preflight requests return a `204` status so browsers can call the API
+without additional configuration.
+
 ## Deployment
 
 1. Create a KV namespace called `LINKS` and bind it to your Worker through the Cloudflare dashboard or CLI.
