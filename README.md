@@ -32,6 +32,21 @@ https://url.example.workers.dev/demo
 1. Create a KV namespace called `LINKS` and bind it to your Worker through the Cloudflare dashboard or CLI.
 2. Copy the code from `src/index.js` into your Worker's script and deploy it.
 
+## Frontend
+
+This repository also includes a small Next.js frontend in the `frontend`
+directory. Set the environment variable `NEXT_PUBLIC_WORKER_URL` to the URL of
+your deployed Worker, then run the development server:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000` in your browser to access the page and generate
+short links.
+
 ## License
 
 This project is released under the AGPLv3 License. See `LICENSE.md` for details.
