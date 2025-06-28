@@ -1,0 +1,16 @@
+{
+  "name": "url-shortener-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@geist-ui/react": "^2.2.4"
+  }
+}
