@@ -15,21 +15,21 @@ export default {
     }
 
     if (request.method === 'POST' && url.pathname === '/') {
-      return withCors(await handlePost(request, LINKS));
+      return withCors(await handlePost(request, env.LINKS));
     }
 
     if (request.method === 'GET') {
       const key = url.pathname.slice(1);
       if (key) {
-        const target = await LINKS.get(key);
+        const target = await env.LINKS.get(key);
         if (target) {
-          return withCors(Response.redirect(target, 302));
+          return Response.redirect(target, 302);
         }
       }
-      return withCors(new Response('Not found', { status: 404 }));
+      return new Response('Not found', { status: 404 });
     }
 
-    return withCors(new Response('Method not allowed', { status: 405 }));
+    return new Response('Method not allowed', { status: 405 });
   }
 };
 
