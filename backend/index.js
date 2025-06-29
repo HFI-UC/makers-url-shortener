@@ -62,7 +62,7 @@ async function handlePost(request, LINKS, env) {
       headers: { "content-type": "application/json" },
     });
   }
-  if (!checkUrl(url, env)) {
+  if (checkUnsafeUrl(url, env)) {
     return new Response(JSON.stringify({ status: 400, error: "Unsafe url" }), {
       status: 400,
       headers: { "content-type": "application/json" },
@@ -76,10 +76,10 @@ async function handlePost(request, LINKS, env) {
   });
 }
 
-async function checkUrl(url, env) {
+async function checkUnsafeUrl(url, env) {
   if (!env || !env.GOOGLE_API_KEY) {
     console.error("GOOGLE_API_KEY is not defined in the environment.");
-    return true; // Assume safe if the API key is missing
+    return false; // Assume safe if the API key is missing
   }
 
   let raw = JSON.stringify({

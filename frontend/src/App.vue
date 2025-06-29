@@ -28,7 +28,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
     toast.add({
       severity: "error",
       summary: "Error",
-      detail: response.error,
+      detail: response,
       life: 3000,
     });
     submitLoading.value = false;
