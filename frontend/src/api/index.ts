@@ -1,6 +1,6 @@
 import axios, { isAxiosError } from "axios";
 
-axios.defaults.baseURL = process.env.BACKEND_URL;
+axios.defaults.baseURL = "https://r.utility.center";
 
 export async function postUrl(url: string) {
   try {
