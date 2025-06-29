@@ -15,7 +15,7 @@ export default {
     }
 
     if (request.method === "POST" && url.pathname === "/") {
-      return withCors(await handlePost(request, env.LINKS));
+      return withCors(await handlePost(request, env.LINKS, env));
     }
 
     if (request.method === "GET") {
@@ -38,7 +38,7 @@ function withCors(response) {
   return response;
 }
 
-async function handlePost(request, LINKS) {
+async function handlePost(request, LINKS, env) {
   let data;
   try {
     data = await request.json();
@@ -62,7 +62,7 @@ async function handlePost(request, LINKS) {
       headers: { "content-type": "application/json" },
     });
   }
-  if (!checkUrl(url)) {
+  if (!checkUrl(url, env)) {
     return new Response(JSON.stringify({ status: 400, error: "Unsafe url" }), {
       status: 400,
       headers: { "content-type": "application/json" },
@@ -76,7 +76,12 @@ async function handlePost(request, LINKS) {
   });
 }
 
-async function checkUrl(url) {
+async function checkUrl(url, env) {
+  if (!env || !env.GOOGLE_API_KEY) {
+    console.error("GOOGLE_API_KEY is not defined in the environment.");
+    return true; // Assume safe if the API key is missing
+  }
+
   let raw = JSON.stringify({
     client: { clientId: "Url-Shorten-Worker", clientVersion: "1.0.7" },
     threatInfo: {
@@ -98,20 +103,18 @@ async function checkUrl(url) {
     redirect: "follow",
   };
 
-  if (!env.GOOGLE_API_KEY) {
-    return true;
-  }
-  result = await fetch(
-    "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" +
-      env.GOOGLE_API_KEY,
-    requestOptions
-  );
-  result = await result.json();
-  console.log(result);
-  if (Object.keys(result).length === 0) {
-    return true;
-  } else {
-    return false;
+  try {
+    let result = await fetch(
+      "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" +
+        env.GOOGLE_API_KEY,
+      requestOptions
+    );
+    result = await result.json();
+    console.log(result);
+    return Object.keys(result).length === 0;
+  } catch (error) {
+    console.error("Error checking URL against Safe Browsing API:", error);
+    return false; // Assume unsafe if the API call fails
   }
 }
 
