@@ -8,7 +8,7 @@ export async function postUrl(url: string) {
     return response.data;
   } catch (err) {
     if (isAxiosError(err)) {
-      return err.response;
+      return err.response?.data;
     }
   }
 }

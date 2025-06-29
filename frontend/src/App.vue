@@ -24,6 +24,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
   }
   submitLoading.value = true;
   const response = await postUrl(form.values.url);
+  console.log(response)
   if (!response.success) {
     toast.add({
       severity: "error",
